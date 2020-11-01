@@ -4,36 +4,45 @@ library(shinydashboard)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(plotly)
 library(wesanderson)
+library(DT)
 
 theme_set(theme_light())
 
 # Data ----
-one_one <- readRDS(file = "one_one.RDS")
+load(file = "datasets.rda")
 
 # UI ----
-ui <- dashboardPage(skin = "black",
-                    dashboardHeader(title = "Den ojämlika brottsligheten",
+ui <- dashboardPage(skin = "blue",
+                    dashboardHeader(title = "The Uneven Crime Drop",
                                     titleWidth = 300),
+                    
                     dashboardSidebar(
                       width = 300,
-                      menuItem("1.1 Polisanmälda brott 1975-2017", tabName = "one_one"),
-                      menuItem("1.2 Antal lagföringar, samtliga brott, Brås officiella statistik respektive studiens lagföringsdata.", tabName = "one_two")
+                      menuItem("1.1 Reported crime 1975-2017", tabName = "one_one")
                     ),
+                    
                     dashboardBody(
+                      
                       fluidRow(
-                        box(title = "Polisanmälda brott 1975-2017", status = "primary",
-                            plotOutput("plot_one_one", height = 250)),
-                        
-                        box(status = "primary",
-                            sliderInput("range", "År", 1975, 2017, c(1975,2017), sep= "", step = 1),
-                            column(3, 
-                                   checkboxGroupInput("checkcrime", 
-                                                      h5("Brott"), 
-                                                      choices = unique(one_one$Crime),
-                                                      selected = one_one$Crime[1:4]))
+                        box(
+                          width = 3,
+                          sliderInput("range", "Year", 
+                                      1975, 2017, c(1975,2017), sep= "", step = 1),
+                          checkboxGroupInput("checkcrime", "Crime", 
+                                             choices = unique(one_one_l$Crime),
+                                             selected = one_one_l$Crime[1:4])
                         )
-                      )
+                      ),
+                      
+                      fluidRow(
+                        box(title = "Reported crime",
+                            plotlyOutput("plot_one_one", height = 500)),
+                        
+                        box(dataTableOutput("mytable"))
+
+                        )
                     )
 )
 
@@ -41,19 +50,41 @@ ui <- dashboardPage(skin = "black",
 server <- function(input, output, session) {
   
   # 1.1 ----
-  output$plot_one_one <- renderPlot({
-    one_one <- one_one %>% subset(Year >= input$range[1] & Year <= input$range[2]) 
-    one_one <- subset(one_one, Crime %in% input$checkcrime)
+  output$plot_one_one <- renderPlotly({
+    validate(
+      need(input$checkcrime, "Please select a crime :)")
+    )
     
-    ggplot(one_one, aes(Year, Values, color = Crime)) +
-      geom_line(size = 1.3) +
-      labs(color = "Brott",
-           y = "Antal per 100 000",
-           x = "År") +
-      scale_x_continuous(breaks = seq(1975, 2017, by = 3)) +
-      scale_color_manual(values=wes_palette(n=4, name="GrandBudapest1"))
+    one_one_l <- one_one_l %>% 
+    subset(Year >= input$range[1] & Year <= input$range[2] & Crime %in% input$checkcrime)
+    
+    ggplotly(ggplot(one_one_l, aes(Year, Value, color = Crime)) +
+               geom_line(size = 1.3) +
+               geom_point() +
+               labs(color = "Crime",
+                    y = "Crimes per 100 000",
+                    x = "Year") +
+               scale_x_continuous(breaks = seq(1975, 2017, by = 3)) +
+               theme(axis.text.x = element_text(angle = -45)) +
+               # geom_smooth(size = 0.3, method = "lm", se = F) +
+               scale_color_manual(values=wes_palette(n=4, name="GrandBudapest1"))) %>% 
+      config(displayModeBar = F)
     
   })
+  
+  output$mytable = renderDataTable({
+    one_one_w <- one_one_w %>% select(Year, input$checkcrime) %>% 
+      subset(Year >= input$range[1] & Year <= input$range[2])
+    
+    datatable(one_one_w, 
+              rownames= FALSE, 
+              options = list(
+                dom = 't', 
+                pageLength = -1, 
+                ordering=F, 
+                columnDefs = list(list(className = 'dt-center', targets = "_all"))))
+  })  
+
   
 }
 
