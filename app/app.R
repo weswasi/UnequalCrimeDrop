@@ -40,18 +40,20 @@ ui <- dashboardPage(skin = "black",
 # Server function ----
 server <- function(input, output, session) {
   
+  # 1.1 ----
   output$plot_one_one <- renderPlot({
-    one_one_slide <- one_one %>% subset(Year >= input$range[1] & Year <= input$range[2]) 
-    one_one_slide <- subset(one_one_slide, Crime %in% input$checkcrime)
-    ggplot(one_one_slide, aes(Year, Values, color = Crime)) +
+    one_one <- one_one %>% subset(Year >= input$range[1] & Year <= input$range[2]) 
+    one_one <- subset(one_one, Crime %in% input$checkcrime)
+    
+    ggplot(one_one, aes(Year, Values, color = Crime)) +
       geom_line(size = 1.3) +
       labs(color = "Brott",
            y = "Antal per 100 000",
            x = "År") +
       scale_x_continuous(breaks = seq(1975, 2017, by = 3)) +
       scale_color_manual(values=wes_palette(n=4, name="GrandBudapest1"))
+    
   })
-  
   
 }
 
