@@ -5,7 +5,6 @@ library(dplyr)
 library(tidyr)
 library(DT)
 library(ggplot2)
-library(wesanderson)
 
 theme_set(theme_bw())
 
@@ -20,6 +19,8 @@ ui <- fluidPage(
     sidebarPanel(
       width = 3,
       helpText("Create graph and table from crime data"),
+      
+      # Drop-down list ----
       selectInput("var", 
                   label = strong("Choose data to display"),
                   choices = list(" " = c(
@@ -54,27 +55,44 @@ ui <- fluidPage(
                       "24-åringar från låg- respektive höginkomstkategorin efter härkomst",
                       "24-åriga män med minst 1 lagföring och minst 4 lagföringar från låg- respektive höginkomstkategorin efter härkomst",
                       "24-åriga kvinnor med minst 1 lagföring och minst 2 lagföringar från låg- respektive höginkomstkategorin efter härkomst")),
-                  selected = "Våld-, stöld- respektive narkotikabrott",
-                  selectize = FALSE,
-                  size = 15),
+                  selected = "Polisanmälda brott per 100 000 invånare",
+                  selectize = FALSE),
       
+      # Slider ----
       sliderInput("range", strong("Year"), 
                   1975, 2017, c(1975,2017), sep= "", step = 1),
       
+      # Checkbox crime type ----
       checkboxGroupInput("checkcrime", strong("Crime"), 
                          choices = unique(one_one_l$Crime),
                          selected = one_one_l$Crime[1:4]),
+      
+      # Checkbox age-group ----
+      checkboxGroupInput("checkage", strong("Age"), 
+                         choices = unique(three_five_l$Age),
+                         selected = three_five_l$Age[1:13]),
       tags$br(),
+      
+      # Download buttons ----
       downloadButton("downloadPlot", "Download Plot"),
       downloadButton('downloadData', 'Download Table')
     ),
     
     mainPanel(
-      fluidRow(
-        column(7, 
-               title = "Reported crime",
-               plotOutput("plot_one_one", height = 500)),
-        column(5, dataTableOutput("mytable"))
+      tabsetPanel(type="tabs",
+                  
+                  #Tab 1 Plots ----
+                  tabPanel(title="Plot",
+                           tags$br(),
+                           column(10, 
+                                  title = "Reported crime",
+                                  plotOutput("plot", height = 500))),
+                  
+                  #Tab 2 Datatable ----
+                  tabPanel(title="Table",
+                           tags$br(),
+                           column(7, dataTableOutput("mytable"))
+                  )
       )
     )
   )
@@ -83,50 +101,89 @@ ui <- fluidPage(
 # Server function ----
 server <- function(input, output) {
   
-  # 1.1 ----
+  # Create plot ----
   plotInput <- reactive({
+    
+    # Force user input atleast one value ----
     validate(
-      need(input$checkcrime, "Please select a crime :)")
+      need(input$checkcrime, "Please select a crime :)"),
+      need(input$checkage, "Please select age :)")
     )
     
-    one_one_l <- one_one_l %>% 
-      subset(Year >= input$range[1] & Year <= input$range[2] & Crime %in% input$checkcrime)
+    if (input$var == "Polisanmälda brott per 100 000 invånare") {
+      one_one_l <- one_one_l %>% 
+        subset(Year >= input$range[1] & Year <= input$range[2] & Crime %in% input$checkcrime)
+      
+      ggplot(one_one_l, aes(Year, Value, color = Crime)) +
+        geom_line(size = 1.2) +
+        geom_point(size = 3) +
+        labs(color = "Crime",
+             y = "Crimes per 100 000",
+             x = "Year") +
+        scale_x_continuous(breaks = seq(1975, 2017, by = 3)) +
+        theme(text = element_text(size=15), 
+              axis.text.x = element_text(angle = -45))
+    }
     
-    ggplot(one_one_l, aes(Year, Value, color = Crime)) +
-               geom_line(size = 1.2) +
-               geom_point(size = 3) +
-               labs(color = "Crime",
-                    y = "Crimes per 100 000",
-                    x = "Year") +
-               scale_x_continuous(breaks = seq(1975, 2017, by = 3)) +
-               theme(text = element_text(size=15), 
-                     axis.text.x = element_text(angle = -45)) +
-               scale_color_manual(values=wes_palette(n=4, name="GrandBudapest1"))
-    
+    else{
+      
+      if (input$var == "Samtliga brott, efter kön") {
+        three_five_l <- three_five_l %>% 
+          subset(Year >= input$range[1] & Year <= input$range[2] & Age %in% input$checkage)
+        
+        ggplot(three_five_l, aes(Year, Value, color = Age)) +
+          facet_grid(Gender ~ ., scales="free") +
+          geom_line(size = 1.2) +
+          geom_point(size = 3) +
+          labs(color = "Age",
+               y = "Crimes ",
+               x = "Year") +
+          scale_x_continuous(breaks = seq(1975, 2017, by = 3)) +
+          theme(text = element_text(size=15), 
+                axis.text.x = element_text(angle = -45))
+      }
+    }
   })
   
-  output$mytable = renderDataTable({
-    one_one_w <- one_one_w %>% select(Year, input$checkcrime) %>% 
-      subset(Year >= input$range[1] & Year <= input$range[2])
+  # Create data for datatable ----
+  tableInput <- reactive({
     
-    datatable(one_one_w, 
-              rownames= FALSE, 
-              extensions = "Buttons",
-              options = list(
-                fixedColumns = TRUE,
-                autoWidth = TRUE,
-                ordering = FALSE,
-                dom = "t",
-                pageLength = -1,
-                columnDefs = list(list(className = 'dt-center', targets = "_all"))))
-  })  
-  
-  output$plot_one_one <- renderPlot({
-    print(plotInput())
+    if (input$var == "Polisanmälda brott per 100 000 invånare") {
+      one_one_w <- one_one_w %>% select(Year, input$checkcrime) %>% 
+        subset(Year >= input$range[1] & Year <= input$range[2])
+    }
+    
+    else{
+      if (input$var == "Samtliga brott, efter kön") {
+        three_five_w <- three_five_w %>% 
+          subset(Year >= input$range[1] & Year <= input$range[2])
+      }}
   })
-
+  
+  # Plot output ----
+  output$plot <- renderPlot({
+    plotInput()
+  })
+  
+  # Datatable output ----
+  output$mytable <- renderDataTable({
+    tableInput() %>% 
+      datatable( 
+        rownames= FALSE,
+        options = list(
+          fixedColumns = TRUE,
+          autoWidth = TRUE,
+          ordering = FALSE,
+          dom = "t",
+          pageLength = -1,
+          columnDefs = list(list(className = 'dt-center', targets = "_all"))))
+  })
+  
+  # Download button content ----
+  # Plot ----
   output$downloadPlot <- downloadHandler(
-    filename = function(){paste("plot-", Sys.Date(), '.png', sep = '')},
+    filename = function(){
+      paste("plot-", Sys.Date(), '.png', sep = '')},
     
     content = function(file){
       png(file, width = 1000, height = 700)
@@ -134,17 +191,16 @@ server <- function(input, output) {
       dev.off()
     })
   
+  # Datatable ----
   output$downloadData <- downloadHandler(
     filename = function() {
       paste('data-', Sys.Date(), '.csv', sep='')
     },
-    content = function(con) {
-      one_one_w <- one_one_w %>% select(Year, input$checkcrime) %>% 
-        subset(Year >= input$range[1] & Year <= input$range[2])
-      write.csv(one_one_w, con)
+    
+    content = function(file){
+      write.csv(tableInput(), file, row.names = FALSE)
     }
   )
-  
 }
 
 # App ----
