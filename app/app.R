@@ -21,7 +21,7 @@ ui <- fluidPage(
     sidebarPanel(
       width = 3,
       helpText("Create and customize graphs and tables from Swedish crime data (1973-2017) gathered from the research project",
-               code(tags$a(href="https://www.criminology.su.se/forskning/forskningsprojekt/den-oj%C3%A4mlika-brottsligheten-1.255012", 
+               code(tags$a(href="https://www.criminology.su.se/om-oss/nyheter/den-oj%C3%A4mlika-brottsligheten-ny-rapport-fr%C3%A5n-kriminologiska-institutionen-1.495808", 
                            "The Uneven Crime Drop")),"(Department of Criminology, University of Stockholm)."),
       
       # Drop-down list ----
