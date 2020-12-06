@@ -33,6 +33,14 @@ one_four_w <- read_xlsx("./datasets/one_four.xlsx")
 one_four_l <- one_four_w %>% 
   pivot_longer(!Year, names_to = "Crime", values_to = "Value")
 
+# 3_1 ----
+# Wide
+three_one_w <- read_xlsx("./datasets/three_one.xlsx")
+
+# Long
+three_one_l <- three_one_w %>% 
+  pivot_longer(!Year, names_to = "Sex", values_to = "Value")
+
 #3_2 ----
 # Wide
 three_two_w <- read_xlsx("./datasets/three_two.xlsx")
@@ -59,14 +67,6 @@ three_three_four_l <- three_three_four_w %>%
 
 three_three_four_l$Sex <- gsub(" .*", "", three_three_four_l$Sex)  
 three_three_four_l$Age <- gsub(".* ", "", three_three_four_l$Age)
-
-# 3_1 ----
-# Wide
-three_one_w <- read_xlsx("./datasets/three_one.xlsx")
-
-# Long
-three_one_l <- three_one_w %>% 
-  pivot_longer(!Year, names_to = "Sex", values_to = "Value")
 
 # 3_5_ab ----
 # Wide
@@ -180,11 +180,11 @@ six_one_ab_w <- read_xlsx("./datasets/six_one_ab.xlsx")
 # Long
 six_one_ab_l <- six_one_ab_w %>% 
   pivot_longer(!Age, names_to = "Sex", values_to = "Value") %>% 
-  mutate(Year = Sex) %>% 
-  select(Age, Sex, Year, Value)
+  mutate(Birthyear = Sex) %>% 
+  select(Age, Sex, Birthyear, Value)
 
 six_one_ab_l$Sex <- gsub("-.*", "", six_one_ab_l$Sex)
-six_one_ab_l$Year <- gsub(".*-", "", six_one_ab_l$Year)
+six_one_ab_l$Birthyear <- gsub(".*-", "", six_one_ab_l$Birthyear)
 
 # 6_2_ad ----
 # Wide
@@ -193,11 +193,11 @@ six_two_ad_w <- read_xlsx("./datasets/six_two_ad.xlsx")
 # Long
 six_two_ad_l <- six_two_ad_w %>% 
   pivot_longer(!Age, names_to = "Sex", values_to = "Value") %>% 
-  mutate(Year = Sex) %>% 
-  select(Age, Sex, Year, Value)
+  mutate(Birthyear = Sex) %>% 
+  select(Age, Sex, Birthyear, Value)
 
 six_two_ad_l$Sex <- gsub("-.*", "", six_two_ad_l$Sex)
-six_two_ad_l$Year <- gsub(".*-", "", six_two_ad_l$Year)
+six_two_ad_l$Birthyear <- gsub(".*-", "", six_two_ad_l$Birthyear)
 
 # 6_2_be ----
 # Wide
@@ -206,11 +206,11 @@ six_two_be_w <- read_xlsx("./datasets/six_two_be.xlsx")
 # Long
 six_two_be_l <- six_two_be_w %>% 
   pivot_longer(!Age, names_to = "Sex", values_to = "Value") %>% 
-  mutate(Year = Sex) %>% 
-  select(Age, Sex, Year, Value)
+  mutate(Birthyear = Sex) %>% 
+  select(Age, Sex, Birthyear, Value)
 
 six_two_be_l$Sex <- gsub("-.*", "", six_two_be_l$Sex)
-six_two_be_l$Year <- gsub(".*-", "", six_two_be_l$Year)
+six_two_be_l$Birthyear <- gsub(".*-", "", six_two_be_l$Birthyear)
 
 # 6_2_cf ----
 # Wide
@@ -219,11 +219,11 @@ six_two_cf_w <- read_xlsx("./datasets/six_two_cf.xlsx")
 # Long
 six_two_cf_l <- six_two_cf_w %>% 
   pivot_longer(!Age, names_to = "Sex", values_to = "Value") %>% 
-  mutate(Year = Sex) %>% 
-  select(Age, Sex, Year, Value)
+  mutate(Birthyear = Sex) %>% 
+  select(Age, Sex, Birthyear, Value)
 
 six_two_cf_l$Sex <- gsub("-.*", "", six_two_cf_l$Sex)
-six_two_cf_l$Year <- gsub(".*-", "", six_two_cf_l$Year)
+six_two_cf_l$Birthyear <- gsub(".*-", "", six_two_cf_l$Birthyear)
 
 # 6_3_ab ----
 # Wide
