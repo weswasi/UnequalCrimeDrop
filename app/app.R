@@ -8,8 +8,6 @@ library(ggplot2)
 library(scales)
 library(RColorBrewer)
 
-
-# Ggplot theme and palette ----
 theme_set(theme_bw())
 
 # Data ----
@@ -22,44 +20,47 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       width = 3,
-      helpText("Create and customize graphs and tables from Swedish crime data (1973-2017) gathered trough The Uneven Crime Drop project (Department of Criminology, University of Stockholm). Note that not all graps and tables are fully customizable."),
+      helpText("Create and customize graphs and tables from Swedish crime data (1973-2017) gathered from the research project",
+               code(tags$a(href="https://www.criminology.su.se/forskning/forskningsprojekt/den-oj%C3%A4mlika-brottsligheten-1.255012", 
+                           "The Uneven Crime Drop")),"(Department of Criminology, University of Stockholm)."),
       
       # Drop-down list ----
       selectInput("var", 
                   label = strong("Choose data to display"),
-                  choices = list(" " = c(
-                    "Polisanmälda brott per 100 000 invånare",
-                    "Antal lagföringar samtliga brott",
-                    "Antal lagföringar respektive antal lagförda brott per 100 000 invånare"),
-                    "Lagföringar:" = c(
-                      "Våld-, stöld- respektive narkotikabrott",
-                      "Samtliga brott, efter kön",
-                      "Våld-, stöld-, respektive narkotikabrott efter kön",
-                      "Samtliga brott efter ålder och kön",
-                      "Stöldbrott efter ålder och kön",
-                      "Våldsbrott efter ålder och kön",
-                      "Narkotikabrott efter ålder och kön",
-                      "Samtliga brott efter härkomst och kön",
-                      "Stöld-, våld- respektive narkotikabrott. Män efter härkomst",
-                      "Stöld-, våld- respektive narkotikabrott. Kvinnor efter härkomst",
-                      "Samtliga brott. Män respektive kvinnor, 15-24 år, efter föräldrars inkomst",
-                      "Våld-, stöld- respektive narkotikabrott efter föräldrars inkomst. Män respektive kvinnor, 15-24 år"),
-                    "Risken (%) att lagföras:" = c(
-                      "Samtliga brott med stigande ålder bland födelsekohorter av män och kvinnor",
-                      "Våldsbrott med stigande ålder bland födelsekohorter av män och kvinnor",
-                      "Stöldbrott med stigande ålder bland födelsekohorter av män och kvinnor",
-                      "Narkotikabrott med stigande ålder bland födelsekohorter av män och kvinnor",
-                      "Brottsdeltagande och brottsfrekvens bland kohorter av män och kvinnor födda mellan 1958 och 1992",
-                      "Snedfördelningen i lagförd brottslighet bland födelsekohorter av män och kvinnor"),
-                    "Andel (%):" = c(
-                      "Lagförda män och kvinnor vid 24 års ålder efter härkomst",
-                      "Högaktiva män och kvinnorvid 24 års ålder efter härkomst",
-                      "Lagförda män och kvinnor vid 24 års ålder efter socio-ekonomiskt ursprung",
-                      "Högaktiva män och kvinnor vid 24 års ålder efter socio-ekonomiskt",
-                      "24-åringar från låg- respektive höginkomstkategorin efter härkomst",
-                      "24-åriga män från låginkomstfamiljer med minst 1 lagföring och minst 4 lagföringar efter härkomst",
-                      "24-åriga kvinnor från låginkomstfamiljer med minst 1 lagföring och minst 2 lagföringar efter härkomst")),
-                  selected = "Polisanmälda brott per 100 000 invånare",
+                  choices = list(
+                    "The general development of crime and prosecutions:" = c(
+                      "Reported crimes (per 100 000 population)",
+                      "Number of prosecutions (all crimes)",
+                      "Number of prosecutions and number of prosecuted crimes (per 100 000 population)"),
+                    "Prosecutions:" = c(
+                      "Violence, theft, and drug offenses",
+                      "All crimes, by sex",
+                      "Violence, theft, and drug offenses, by sex",
+                      "All crimes, by age and sex",
+                      "Theft, by age and sex",
+                      "Violence, by age and sex",
+                      "Drug offenses, by age and sex",
+                      "All crimes, by place of birth and sex",
+                      "Violence, theft, and drug offenses. Males, by place of birth",
+                      "Violence, theft, and drug offenses. Females, by place of birth",
+                      "All crimes. Males and females, 15-24 years, by parents income",
+                      "Violence, theft, and drug offenses, by parents income. Male and females, 15-24 years"),
+                    "The risk (%) of being prosecuted:" = c(
+                      "All crimes with increasing age among birth cohorts of men and women",
+                      "Violent crime with increasing age among birth cohorts of men and women",
+                      "Thefts with increasing age among birth cohorts of men and women",
+                      "Drug offenses with increasing age among birth cohorts of men and women",
+                      "Crime participation and crime rate among cohorts of men and women born between 1958 and 1992",
+                      "The disproportion of prosecuted crime among birth cohorts of men and women"),
+                    "Share (%) of:" = c(
+                      "Prosecuted males and females at the age of 24, by place of birth",
+                      "Highly active males and females at the age of 24, by place of birth",
+                      "Prosecuted males and females at the age of 24, by socio-economic background",
+                      "Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background",
+                      "24-year-olds from the low- and high-income category, by place of birth",
+                      "24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth",
+                      "24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth")),
+                  selected = "Violence, theft, and drug offenses, by parents income. Male and females, 15-24 years",
                   selectize = FALSE),
       
       # Slider:Year ----
@@ -69,14 +70,14 @@ ui <- fluidPage(
       # Slider: Age ----
       conditionalPanel(
         condition = 
-          "input.var == 'Brottsdeltagande och brottsfrekvens bland kohorter av män och kvinnor födda mellan 1958 och 1992'",
+          "input.var == 'Crime participation and crime rate among cohorts of men and women born between 1958 and 1992'",
         sliderInput("birthyear", strong("Birthyear"), 
                     1958, 1992, c(1958, 1992), sep= "", step = 1)),
       
       # Slider: Birthyear ----
       conditionalPanel(
         condition = 
-          "input.var == 'Samtliga brott med stigande ålder bland födelsekohorter av män och kvinnor'",
+          "input.var == 'All crimes with increasing age among birth cohorts of men and women'",
         sliderInput("age", strong("Age"), 
                     15, 58, c(15,58), sep= "", step = 1)),
       
@@ -143,17 +144,16 @@ server <- function(input, output) {
     # Force user input at least one Value ----
     validate(
       need(input$checkcrime, "Please select a crime :)"),
-      need(input$checkage, "Please select age :)")
-    )
+      need(input$checkage, "Please select age :)"))
     
     # Plot ---
-    if (input$var == "Polisanmälda brott per 100 000 invånare") {
+    if (input$var == "Reported crimes (per 100 000 population)") {
       one_one_l %>% 
         subset(Year >= input$range[1] & Year <= input$range[2] & Crime %in% input$checkcrime) %>% 
         ggplot(aes(Year, Value, color = Crime)) +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Polisanmälda brott per 100 000 invånare",
+        labs(title = "Reported crimes (per 100 000 population)",
              y = "Crime per 100 000",
              x = "Year",
              color = "Crime") +
@@ -164,14 +164,14 @@ server <- function(input, output) {
         scale_colour_brewer(palette = "Paired")
     }
     
-    else if (input$var == "Antal lagföringar samtliga brott") {
+    else if (input$var == "Number of prosecutions (all crimes)") {
       one_two_l %>% 
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Source)) +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Antal lagföringar samtliga brott",
-             y = "Crime ",
+        labs(title = "Number of prosecutions (all crimes)",
+             y = "Prosecutions",
              x = "Year",
              color = "Data source") +
         scale_x_continuous(breaks = seq(1975, 2017, by = 3)) +
@@ -182,13 +182,13 @@ server <- function(input, output) {
         scale_colour_brewer(palette = "Paired")
     }
     
-    else if (input$var == "Antal lagföringar respektive antal lagförda brott per 100 000 invånare"){
+    else if (input$var == "Number of prosecutions and number of prosecuted crimes (per 100 000 population)"){
       one_three_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Prosecutions)) +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Antal lagföringar respektive antal lagförda brott per 100 000 invånare",
+        labs(title = "Number of prosecutions and number of prosecuted crimes (per 100 000 population)",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Prosecutions") +
@@ -200,13 +200,13 @@ server <- function(input, output) {
         scale_colour_brewer(palette = "Paired")
     }
     
-    else if (input$var == "Våld-, stöld- respektive narkotikabrott"){
+    else if (input$var == "Violence, theft, and drug offenses"){
       one_four_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2] & Crime %in% input$checkcrime) %>% 
         ggplot(aes(Year, Value, color = Crime)) +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Våld-, stöld- respektive narkotikabrott",
+        labs(title = "Violence, theft, and drug offenses",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Crime") +
@@ -218,33 +218,32 @@ server <- function(input, output) {
         scale_colour_brewer(palette = "Paired")
     }
     
-    else if (input$var == "Samtliga brott, efter kön") {
+    else if (input$var == "All crimes, by sex") {
       three_one_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
-        ggplot(aes(Year, Value, color = Gender)) +
+        ggplot(aes(Year, Value, color = Sex)) +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Samtliga brott, efter kön",
+        labs(title = "All crimes, by sex",
              y = "Prosecutions per 100 000",
              x = "Year",
-             color = "Gender") +
+             color = "Sex") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         theme(
           plot.title = element_text(color="gray50"),
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Våld-, stöld-, respektive narkotikabrott efter kön") {
+    else if (input$var == "Violence, theft, and drug offenses, by sex") {
       three_two_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2] & Crime %in% input$checkcrime) %>% 
         ggplot(aes(Year, Value, color = Crime)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Våld-, stöld-, respektive narkotikabrott efter kön",
+        labs(title = "Violence, theft, and drug offenses, by sex",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Crime") +
@@ -254,18 +253,17 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Samtliga brott efter ålder och kön") {
+    else if (input$var == "All crimes, by age and sex") {
       three_three_four_l %>% 
         subset(Year >= input$range[1] & Year <= input$range[2] & Age %in% input$checkage) %>% 
         ggplot(aes(Year, Value, color = Age)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Samtliga brott, efter kön",
-             y = "Crime ",
+        labs(title = "All crimes, by sex",
+             y = "Prosecutions per 100 000",
              x = "Year",
              color = "Age") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
@@ -276,14 +274,14 @@ server <- function(input, output) {
         scale_colour_brewer(palette = "Paired")
     }
     
-    else if (input$var == "Stöldbrott efter ålder och kön") {
+    else if (input$var == "Theft, by age and sex") {
       three_five_ad_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2] & Age %in% input$checkage) %>% 
         ggplot(aes(Year, Value, color = Age)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Stöldbrott efter ålder och kön",
+        labs(title = "Theft, by age and sex",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Age") +
@@ -293,17 +291,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Våldsbrott efter ålder och kön") {
+    else if (input$var == "Violence, by age and sex") {
       three_five_be_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2] & Age %in% input$checkage) %>% 
         ggplot(aes(Year, Value, color = Age)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Våldsbrott efter ålder och kön",
+        labs(title = "Violence, by age and sex",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Age") +
@@ -313,17 +310,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Narkotikabrott efter ålder och kön") {
+    else if (input$var == "Drug offenses, by age and sex") {
       three_five_cf_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2] & Age %in% input$checkage) %>% 
         ggplot(aes(Year, Value, color = Age)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Narkotikabrott efter ålder och kön",
+        labs(title = "Drug offenses, by age and sex",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Age") +
@@ -333,17 +329,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Samtliga brott efter härkomst och kön") {
+    else if (input$var == "All crimes, by place of birth and sex") {
       four_one_four_two_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2] & Country %in% input$checkregion) %>% 
         ggplot(aes(Year, Value, color = Country)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Samtliga brott efter härkomst och kön",
+        labs(title = "All crimes, by place of birth and sex",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Country") +
@@ -353,17 +348,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Stöld-, våld- respektive narkotikabrott. Män efter härkomst") {
+    else if (input$var == "Violence, theft, and drug offenses. Males, by place of birth") {
       four_three_ac_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2] & Country %in% input$checkregion) %>% 
         ggplot(aes(Year, Value, color = Country)) +
         facet_grid(Crime ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Stöld-, våld- respektive narkotikabrott. Män efter härkomst",
+        labs(title = "Violence, theft, and drug offenses. Males, by place of birth",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Country") +
@@ -373,17 +367,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Stöld-, våld- respektive narkotikabrott. Kvinnor efter härkomst") {
+    else if (input$var == "Violence, theft, and drug offenses. Females, by place of birth") {
       four_three_df_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2] & Country %in% input$checkregion) %>% 
         ggplot(aes(Year, Value, color = Country)) +
         facet_grid(Crime ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Stöld-, våld- respektive narkotikabrott. Kvinnor efter härkomst",
+        labs(title = "Violence, theft, and drug offenses. Females, by place of birth",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Country") +
@@ -393,17 +386,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Samtliga brott. Män respektive kvinnor, 15-24 år, efter föräldrars inkomst") {
+    else if (input$var == "All crimes. Males and females, 15-24 years, by parents income") {
       five_one_ab_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Income)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Samtliga brott. Män respektive kvinnor, 15-24 år, efter föräldrars inkomst",
+        labs(title = "All crimes. Males and females, 15-24 years, by parents income",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Income") +
@@ -413,17 +405,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Våld-, stöld- respektive narkotikabrott efter föräldrars inkomst. Män respektive kvinnor, 15-24 år") {
+    else if (input$var == "Violence, theft, and drug offenses, by parents income. Male and females, 15-24 years") {
       five_two_af_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Income)) +
-        facet_grid(Gender ~ Crime, scales="free") +
+        facet_grid(Sex ~ Crime, scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Våld-, stöld- respektive narkotikabrott efter föräldrars inkomst. Män respektive kvinnor, 15-24 år",
+        labs(title = "Violence, theft, and drug offenses, by parents income. Male and females, 15-24 years",
              y = "Prosecutions per 100 000",
              x = "Year",
              color = "Income") +
@@ -433,94 +424,94 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Samtliga brott med stigande ålder bland födelsekohorter av män och kvinnor") {
+    else if (input$var == "All crimes with increasing age among birth cohorts of men and women") {
       six_one_ab_l %>%
         subset(Age >= input$age[1] & Age <= input$age[2]) %>%
         ggplot(aes(Age, Value, color = Year)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Samtliga brott med stigande ålder bland födelsekohorter av män och kvinnor",
+        labs(title = "All crimes with increasing age among birth cohorts of men and women",
              y = "Proportion of prosecuted (%)",
              x = "Age",
              color = "Year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
+        scale_y_continuous(labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Våldsbrott med stigande ålder bland födelsekohorter av män och kvinnor") {
+    else if (input$var == "Violent crime with increasing age among birth cohorts of men and women") {
       six_two_ad_l %>%
         subset(Age >= input$age[1] & Age <= input$age[2]) %>%
         ggplot(aes(Age, Value, color = Year)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Våldsbrott med stigande ålder bland födelsekohorter av män och kvinnor",
+        labs(title = "Violent crime with increasing age among birth cohorts of men and women",
              y = "Proportion of prosecuted (%)",
              x = "Age",
              color = "Year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
+        scale_y_continuous(labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Stöldbrott med stigande ålder bland födelsekohorter av män och kvinnor") {
+    else if (input$var == "Thefts with increasing age among birth cohorts of men and women") {
       six_two_be_l %>%
         subset(Age >= input$age[1] & Age <= input$age[2]) %>%
         ggplot(aes(Age, Value, color = Year)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Stöldbrott med stigande ålder bland födelsekohorter av män och kvinnor",
+        labs(title = "Thefts with increasing age among birth cohorts of men and women",
              y = "Proportion of prosecuted (%)",
              x = "Age",
              color = "Year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
+        scale_y_continuous(labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Narkotikabrott med stigande ålder bland födelsekohorter av män och kvinnor") {
+    else if (input$var == "Drug offenses with increasing age among birth cohorts of men and women") {
       six_two_cf_l %>%
         subset(Age >= input$age[1] & Age <= input$age[2]) %>%
         ggplot(aes(Age, Value, color = Year)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Narkotikabrott med stigande ålder bland födelsekohorter av män och kvinnor",
+        labs(title = "Drug offenses with increasing age among birth cohorts of men and women",
              y = "Proportion of prosecuted (%)",
              x = "Age",
              color = "Year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
+        scale_y_continuous(labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    # ADD GEOM POINT
-    else if (input$var == "Brottsdeltagande och brottsfrekvens bland kohorter av män och kvinnor födda mellan 1958 och 1992") {
+    else if (input$var == "Crime participation and crime rate among cohorts of men and women born between 1958 and 1992") {
       six_three_ab_l %>%
         subset(Birthyear >= input$birthyear[1] & Birthyear <= input$birthyear[2]) %>% 
         ggplot(aes(x = Birthyear)) +
-        facet_grid(Gender ~., scales="free") +
+        facet_grid(Sex ~., scales="free") +
         geom_line(aes(y = `Proportion of prosecuted individuals`), size = 1.2, color = "#33A02C") +
+        geom_point(aes(y = `Proportion of prosecuted individuals`), color = "#33A02C") +
         geom_line(aes(y = `Average number of criminal offenses` * 3.5), size = 1.2, color = "#1F78B4") +
-        labs(title = "Brottsdeltagande och brottsfrekvens bland kohorter av män och kvinnor födda mellan 1958 och 1992",
+        geom_point(aes(y = `Average number of criminal offenses` * 3.5), color = "#1F78B4") +
+        labs(title = "Crime participation and crime rate among cohorts of men and women born between 1958 and 1992",
              y = "Proportion of prosecuted (%)",
              x = "Birthyear") +
         scale_y_continuous("Proportion of prosecuted individuals (%)", 
@@ -531,16 +522,15 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.title.y = element_text(color = "#33A02C"),
           axis.title.y.right = element_text(color = "#1F78B4"))
-      
     }
     
-    else if (input$var == "Snedfördelningen i lagförd brottslighet bland födelsekohorter av män och kvinnor") {
+    else if (input$var == "The disproportion of prosecuted crime among birth cohorts of men and women") {
       six_four_ab_l %>%
         ggplot(aes(Birthyear, Value, fill = Percentile)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_bar(position="fill", stat="identity") +
-        labs(title = "Snedfördelningen i lagförd brottslighet bland födelsekohorter av män och kvinnor",
-             y = "Andel av alla brott",
+        labs(title = "The disproportion of prosecuted crime among birth cohorts of men and women",
+             y = "Proportions of all crimes",
              x = "Birthyear") +
         geom_text(aes(label = Value),
                   position="fill", vjust=+2.1, size=3) +
@@ -550,18 +540,18 @@ server <- function(input, output) {
         scale_fill_grey() +
         scale_y_continuous(label = scales::percent) +
         scale_x_continuous(breaks = seq(1960, 1990, by = 5))
-      
     }
     
-    else if (input$var == "Lagförda män och kvinnor vid 24 års ålder efter härkomst") {
+    else if (input$var == "Prosecuted males and females at the age of 24, by place of birth") {
       seven_one_ab_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Country)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Lagförda män och kvinnor vid 24 års ålder efter härkomst",
+        labs(title = "Prosecuted males and females at the age of 24, by place of birth",
              x = "Year",
+             y = "",
              color = "Country") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(labels = percent_format(scale = 1, accuracy = 1)) +
@@ -570,17 +560,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Högaktiva män och kvinnorvid 24 års ålder efter härkomst") {
+    else if (input$var == "Highly active males and females at the age of 24, by place of birth") {
       seven_one_cd_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Country)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Högaktiva män och kvinnorvid 24 års ålder efter härkomst",
+        labs(title = "Highly active males and females at the age of 24, by place of birth",
              x = "Year",
              y = "",
              color = "Country") +
@@ -591,17 +580,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Lagförda män och kvinnor vid 24 års ålder efter socio-ekonomiskt ursprung") {
+    else if (input$var == "Prosecuted males and females at the age of 24, by socio-economic background") {
       seven_two_ab_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Income)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Lagförda män och kvinnor vid 24 års ålder efter socio-ekonomiskt ursprung",
+        labs(title = "Prosecuted males and females at the age of 24, by socio-economic background",
              x = "Year",
              y = "",
              color = "Income") +
@@ -612,17 +600,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "Högaktiva män och kvinnor vid 24 års ålder efter socio-ekonomiskt") {
+    else if (input$var == "Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background") {
       seven_two_cd_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Income)) +
-        facet_grid(Gender ~ ., scales="free") +
+        facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Högaktiva män (≥ 4 lagföringar) och kvinnor (≥ 2 lagföringar)  vid 24 års ålder efter socio-ekonomiskt",
+        labs(title = "Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background",
              y = "",
              x = "Year",
              color = "Income") +
@@ -633,17 +620,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "24-åringar från låg- respektive höginkomstkategorin efter härkomst") {
+    else if (input$var == "24-year-olds from the low- and high-income category, by place of birth") {
       seven_three_ab_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Country)) +
         facet_grid(Income ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "24-åringar från låg- respektive höginkomstkategorin efter härkomst",
+        labs(title = "24-year-olds from the low- and high-income category, by place of birth",
              y = "",
              x = "Year",
              color = "Country") +
@@ -654,17 +640,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "24-åriga män från låginkomstfamiljer med minst 1 lagföring och minst 4 lagföringar efter härkomst") {
+    else if (input$var == "24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth") {
       seven_four_ab_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Country)) +
         facet_grid(Prosecution ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "24-åriga män från låginkomstfamiljer med minst 1 lagföring och minst 4 lagföringar efter härkomst",
+        labs(title = "24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth",
              y = "",
              x = "Year",
              color = "Country") +
@@ -675,17 +660,16 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
     
-    else if (input$var == "24-åriga kvinnor från låginkomstfamiljer med minst 1 lagföring och minst 2 lagföringar efter härkomst") {
+    else if (input$var == "24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth") {
       seven_five_ab_l %>%
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
         ggplot(aes(Year, Value, color = Country)) +
         facet_grid(Prosecution ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "24-åriga kvinnor från låginkomstfamiljer med minst 1 lagföring och minst 2 lagföringar efter härkomst",
+        labs(title = "24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth",
              y = "",
              x = "Year",
              color = "Country") +
@@ -696,154 +680,129 @@ server <- function(input, output) {
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
         scale_colour_brewer(palette = "Paired")
-      
     }
-    
     
   })
   
   # Create data for datatable ----
   tableInput <- reactive({
     
-    if (input$var == "Polisanmälda brott per 100 000 invånare") {
+    if (input$var == "Reported crimes (per 100 000 population)") {
       one_one_w %>% 
         select(Year, input$checkcrime) %>% 
-        subset(Year >= input$range[1] & Year <= input$range[2])
-    }
+        subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Antal lagföringar samtliga brott") {
+    else if (input$var == "Number of prosecutions (all crimes)") {
       one_two_w %>% 
-        subset(Year >= input$range[1] & Year <= input$range[2])
-    }
+        subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Antal lagföringar respektive antal lagförda brott per 100 000 invånare") {
+    else if (input$var == "Number of prosecutions and number of prosecuted crimes (per 100 000 population)") {
       one_three_w %>% 
-        subset(Year >= input$range[1] & Year <= input$range[2])
-    }
+        subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Våld-, stöld- respektive narkotikabrott") {
+    else if (input$var == "Violence, theft, and drug offenses") {
       one_four_w %>% 
-        subset(Year >= input$range[1] & Year <= input$range[2])
-    }
+        subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Samtliga brott, efter kön") {
+    else if (input$var == "All crimes, by sex") {
       three_one_w %>% 
-        subset(Year >= input$range[1] & Year <= input$range[2])
-    }
+        subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Våld-, stöld-, respektive narkotikabrott efter kön") {
+    else if (input$var == "Violence, theft, and drug offenses, by sex") {
       three_two_w %>% 
-        subset(Year >= input$range[1] & Year <= input$range[2])
-    }
+        subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Samtliga brott efter ålder och kön") {
+    else if (input$var == "All crimes, by age and sex") {
       three_three_four_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
-        select(Year, ends_with(input$checkage))
-    }
+        select(Year, ends_with(input$checkage))}
     
-    else if (input$var == "Stöldbrott efter ålder och kön") {
+    else if (input$var == "Theft, by age and sex") {
       three_five_ad_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
-        select(Year, ends_with(input$checkage))
-    }
+        select(Year, ends_with(input$checkage))}
     
-    else if (input$var == "Våldsbrott efter ålder och kön") {
+    else if (input$var == "Violence, by age and sex") {
       three_five_be_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
-        select(Year, ends_with(input$checkage))
-    }
+        select(Year, ends_with(input$checkage))}
     
     else if (input$var == "Narkotikabrott efter ålder och kön") {
       three_five_cf_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
-        select(Year, ends_with(input$checkage))
-    }
+        select(Year, ends_with(input$checkage))}
     
-    else if (input$var == "Samtliga brott efter härkomst och kön") {
+    else if (input$var == "All crimes, by place of birth and sex") {
       four_one_four_two_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
-        select(Year, ends_with(input$checkregion))
-    }
+        select(Year, ends_with(input$checkregion))}
     
-    else if (input$var == "Stöld-, våld- respektive narkotikabrott. Män efter härkomst") {
+    else if (input$var == "Violence, theft, and drug offenses. Males, by place of birth") {
       four_three_ac_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
-        select(Year, starts_with(input$checkregion) )
-    }
+        select(Year, starts_with(input$checkregion))}
     
-    else if (input$var == "Stöld-, våld- respektive narkotikabrott. Kvinnor efter härkomst") {
+    else if (input$var == "Violence, theft, and drug offenses. Females, by place of birth") {
       four_three_ac_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2]) %>% 
-        select(Year, starts_with(input$checkregion) )
-    }
+        select(Year, starts_with(input$checkregion))}
     
-    else if (input$var == "Samtliga brott. Män respektive kvinnor, 15-24 år, efter föräldrars inkomst") {
+    else if (input$var == "All crimes. Males and females, 15-24 years, by parents income") {
       five_one_ab_w %>% 
-        subset(Year >= input$range[1] & Year <= input$range[2])
-    }
+        subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Våld-, stöld- respektive narkotikabrott efter föräldrars inkomst. Män respektive kvinnor, 15-24 år") {
+    else if (input$var == "Violence, theft, and drug offenses, by parents income. Male and females, 15-24 years") {
       five_two_af_w <- five_two_af_w %>% 
-        subset(Year >= input$range[1] & Year <= input$range[2])
-    }
+        subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Samtliga brott med stigande ålder bland födelsekohorter av män och kvinnor") {
+    else if (input$var == "All crimes with increasing age among birth cohorts of men and women") {
       six_one_ab_w %>% 
-        subset(Age >= input$age[1] & Age <= input$age[2])
-    }
+        subset(Age >= input$age[1] & Age <= input$age[2])}
     
-    
-    else if (input$var == "Våldsbrott med stigande ålder bland födelsekohorter av män och kvinnor") {
+    else if (input$var == "Violent crime with increasing age among birth cohorts of men and women") {
       six_two_ad_w %>% 
-        subset(Age >= input$age[1] & Age <= input$age[2])
-    }
+        subset(Age >= input$age[1] & Age <= input$age[2])}
     
-    else if (input$var == "Stöldbrott med stigande ålder bland födelsekohorter av män och kvinnor") {
+    else if (input$var == "Thefts with increasing age among birth cohorts of men and women") {
       six_two_be_w %>% 
-        subset(Age >= input$age[1] & Age <= input$age[2])
-    }
+        subset(Age >= input$age[1] & Age <= input$age[2])}
     
-    else if (input$var == "Narkotikabrott med stigande ålder bland födelsekohorter av män och kvinnor") {
+    else if (input$var == "Drug offenses with increasing age among birth cohorts of men and women") {
       six_two_cf_w %>% 
-        subset(Age >= input$age[1] & Age <= input$age[2])
-    }
+        subset(Age >= input$age[1] & Age <= input$age[2])}
     
-    else if (input$var == "Brottsdeltagande och brottsfrekvens bland kohorter av män och kvinnor födda mellan 1958 och 1992") {
+    else if (input$var == "Crime participation and crime rate among cohorts of men and women born between 1958 and 1992") {
       six_three_ab_w %>% 
-        subset(Birthyear >= input$birthyear[1] & Birthyear <= input$birthyear[2])
-    }
+        subset(Birthyear >= input$birthyear[1] & Birthyear <= input$birthyear[2])}
     
-    else if (input$var == "Snedfördelningen i lagförd brottslighet bland födelsekohorter av män och kvinnor") {
-      six_four_ab_w
-    }
+    else if (input$var == "The disproportion of prosecuted crime among birth cohorts of men and women") {
+      six_four_ab_w}
     
-    else if (input$var == "Lagförda män och kvinnor vid 24 års ålder efter härkomst") {
+    else if (input$var == "Prosecuted males and females at the age of 24, by place of birth") {
       seven_one_ab_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Högaktiva män och kvinnorvid 24 års ålder efter härkomst") {
+    else if (input$var == "Highly active males and females at the age of 24, by place of birth") {
       seven_one_cd_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Lagförda män och kvinnor vid 24 års ålder efter socio-ekonomiskt ursprung") {
+    else if (input$var == "Prosecuted males and females at the age of 24, by socio-economic background") {
       seven_two_ab_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "Högaktiva män och kvinnor vid 24 års ålder efter socio-ekonomiskt") {
+    else if (input$var == "Highly active criminal male (≥ 4 prosecutions) and females (≥ 4 prosecutions) at the age of 24, by socio-economic background") {
       seven_two_cd_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "24-åringar från låg- respektive höginkomstkategorin efter härkomst") {
+    else if (input$var == "24-year-olds from the low- and high-income category, by place of birth") {
       seven_three_ab_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    else if (input$var == "24-åriga män från låginkomstfamiljer med minst 1 lagföring och minst 4 lagföringar efter härkomst") {
+    else if (input$var == "24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth") {
       seven_four_ab_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2])}
     
-    
-    else if (input$var == "24-åriga kvinnor från låginkomstfamiljer med minst 1 lagföring och minst 2 lagföringar efter härkomst") {
+    else if (input$var == "24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth") {
       seven_five_ab_w %>% 
         subset(Year >= input$range[1] & Year <= input$range[2])}
     
@@ -852,17 +811,90 @@ server <- function(input, output) {
   # Reactive page number
   output$pdfview <- renderUI({
     
-    if (input$var == "Polisanmälda brott per 100 000 invånare") {
-      tags$iframe(style="height:780px; width:100%", src="rapport.pdf#page=4")
-    }
+    if (input$var == "Reported crimes (per 100 000 population)") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=16")}
     
-    else if (input$var == "Antal lagföringar samtliga brott") {
-      tags$iframe(style="height:980px; width:100%", src="rapport.pdf#page=30")
-    }
+    else if (input$var == "Number of prosecutions (all crimes)") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=20")}
     
-    else if (input$var == "Antal lagföringar respektive antal lagförda brott per 100 000 invånare") {
-      tags$iframe(style="height:980px; width:100%", src="rapport.pdf#page=12")
-    }
+    else if (input$var == "Number of prosecutions and number of prosecuted crimes (per 100 000 population)") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=22")}
+    
+    else if (input$var == "Violence, theft, and drug offenses") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=23")}
+    
+    else if (input$var == "All crimes, by sex") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=49")}
+    
+    else if (input$var == "Violence, theft, and drug offenses, by sex") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=50")}
+    
+    else if (input$var == "All crimes, by age and sex") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=52")}
+    
+    else if (input$var == "Theft, by age and sex") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=54")}
+    
+    else if (input$var == "Violence, by age and sex") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=54")}
+    
+    else if (input$var == "Drug offenses, by age and sex") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=54")}
+    
+    else if (input$var == "All crimes, by place of birth and sex") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=59")}
+    
+    else if (input$var == "Violence, theft, and drug offenses. Males, by place of birth") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=62")}
+    
+    else if (input$var == "Violence, theft, and drug offenses. Females, by place of birth") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=64")}
+    
+    else if (input$var == "All crimes. Males and females, 15-24 years, by parents income") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=69")}
+    
+    else if (input$var == "Violence, theft, and drug offenses, by parents income. Male and females, 15-24 years") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=70")}
+    
+    else if (input$var == "All crimes with increasing age among birth cohorts of men and women") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=76")}
+    
+    else if (input$var == "Violent crime with increasing age among birth cohorts of men and women") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=76")}
+    
+    else if (input$var == "Thefts with increasing age among birth cohorts of men and women") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=76")}
+    
+    else if (input$var == "Drug offenses with increasing age among birth cohorts of men and women") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=76")}
+    
+    else if (input$var == "Crime participation and crime rate among cohorts of men and women born between 1958 and 1992") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=80")}
+    
+    else if (input$var == "The disproportion of prosecuted crime among birth cohorts of men and women") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=82")}
+    
+    else if (input$var == "Prosecuted males and females at the age of 24, by place of birth") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=86")}
+    
+    else if (input$var == "Highly active males and females at the age of 24, by place of birth") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=86")}
+    
+    else if (input$var == "Prosecuted males and females at the age of 24, by socio-economic background") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=89")}
+    
+    else if (input$var == "Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=89")}
+    
+    else if (input$var == "24-year-olds from the low- and high-income category, by place of birth") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=91")}
+    
+    else if (input$var == "24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=91")}
+    
+    else if (input$var == "24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth") {
+      tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=91")}
+    
   })
   
   # Plot output ----
@@ -882,7 +914,7 @@ server <- function(input, output) {
           dom = "t",
           pageLength = -1,
           columnDefs = list(list(className = 'dt-center', targets = "_all"))),
-        caption = htmltools::tags$caption(style = 'caption-side: top; color:gray; font-size:130% ;',input$var) )
+        caption = htmltools::tags$caption(style = 'caption-side: top; color:gray; font-size:130% ;',input$var))
   })
   
   # Download button content ----
@@ -905,8 +937,7 @@ server <- function(input, output) {
     
     content = function(file){
       write.csv(tableInput(), file, row.names = FALSE)
-    }
-  )
+    })
 }
 
 # App ----
