@@ -6,6 +6,7 @@ library(readxl)
 # Wide
 one_one_w <- read_xlsx("./datasets/one_one.xlsx")
 
+# Long
 one_one_l <- one_one_w %>% 
   pivot_longer(!Year, names_to = "Crime", values_to = "Value")
 
@@ -13,7 +14,7 @@ one_one_l <- one_one_w %>%
 # Wide
 one_two_w <- read_xlsx("./datasets/one_two.xlsx")
 
-#Long
+# Long
 one_two_l <- one_two_w %>% 
   pivot_longer(!Year, names_to = "Source", values_to = "Value")
 
@@ -21,7 +22,7 @@ one_two_l <- one_two_w %>%
 # Wide
 one_three_w <- read_xlsx("./datasets/one_three.xlsx")
 
-#Long
+# Long
 one_three_l <- one_three_w %>% 
   pivot_longer(!Year, names_to = "Prosecutions", values_to = "Value")
 
@@ -41,7 +42,7 @@ three_one_w <- read_xlsx("./datasets/three_one.xlsx")
 three_one_l <- three_one_w %>% 
   pivot_longer(!Year, names_to = "Sex", values_to = "Value")
 
-#3_2 ----
+# 3_2 ----
 # Wide
 three_two_w <- read_xlsx("./datasets/three_two.xlsx")
 
