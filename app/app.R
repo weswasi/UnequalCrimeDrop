@@ -533,7 +533,7 @@ server <- function(input, output) {
              y = "Proportions of all crimes",
              x = "Birthyear") +
         geom_text(aes(label = Value),
-                  position="fill", vjust=+2.1, size=3) +
+                  position="fill", vjust=+2.1, size=3, color="white") +
         theme(
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
