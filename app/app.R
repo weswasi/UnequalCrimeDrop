@@ -23,6 +23,10 @@ ui <- fluidPage(
       helpText("Create and customize graphs and tables from Swedish crime data (1973-2017) gathered from the research project",
                code(tags$a(href="https://www.criminology.su.se/om-oss/nyheter/den-oj%C3%A4mlika-brottsligheten-ny-rapport-fr%C3%A5n-kriminologiska-institutionen-1.495808", 
                            "The Uneven Crime Drop")),"(Department of Criminology, University of Stockholm)."),
+      tags$a(href="https://www.criminology.su.se/polopoly_fs/1.513589.1598864665!/menu/standard/file/Den%20oj%C3%A4mlika%20brottslighetsutvecklingen.%20Tabellbilaga.xlsx", 
+             "Source material"),
+      tags$br(),
+      tags$br(),
       
       # Drop-down list ----
       selectInput("var", 
