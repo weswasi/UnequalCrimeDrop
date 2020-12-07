@@ -275,8 +275,8 @@ server <- function(input, output) {
       need(input$checkcountry1, "Please select country :)"),
       need(input$checkcountry2, "Please select country :)"),
       need(input$checkincome, "Please select income :)"),
-      need(input$checkbirthyear, "Please select birth year:)"),
-      need(input$checkbirthyear2, "Please select birth year:)")
+      need(input$checkbirthyear, "Please select birth year :)"),
+      need(input$checkbirthyear2, "Please select birth year :)")
     )
     
     # Plot ---
