@@ -228,7 +228,7 @@ ui <- fluidPage(
       tags$br(),
       tags$a(
         href="https://github.com/weswasi/UnevenCrimeDrop", 
-        tags$img(src="git.png",
+        tags$img(src="https://github.githubassets.com/images/modules/logos_page/Octocat.png",
                  width="40",
                  height="35")
       ),
