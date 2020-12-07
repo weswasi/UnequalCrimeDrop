@@ -5,8 +5,8 @@ account: weswasi
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3125198
-bundleId: 3951783
+bundleId: 3954547
 url: https://weswasi.shinyapps.io/UnevenCrimeDrop/
-when: 1607289156.09148
+when: 1607343427.05026
 asMultiple: FALSE
 asStatic: FALSE
