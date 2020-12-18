@@ -1,0 +1,12 @@
+name: UnequalCrimeDrop
+title: UnequalCrimeDrop
+username:
+account: weswasi
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3416960
+bundleId: 4007414
+url: https://weswasi.shinyapps.io/UnequalCrimeDrop/
+when: 1608327807.25639
+asMultiple: FALSE
+asStatic: FALSE
