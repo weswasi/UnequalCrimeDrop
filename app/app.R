@@ -471,7 +471,7 @@ server <- function(input, output) {
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "All crimes, by place of birth and sex (15-75 years; age-standardized)",
+        labs(title = "All crimes, by place of birth and sex (age-standardized; 15-75 years)",
              y = "Prosecutions (per 100 000 population)",
              x = "Year",
              color = "Country") +
@@ -490,7 +490,7 @@ server <- function(input, output) {
         facet_grid(Crime ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Violence, theft, and drug offenses. Males, by place of birth (15-75 years; age-standardized)",
+        labs(title = "Violence, theft, and drug offenses. Males, by place of birth (age-standardized; 15-75 years)",
              y = "Prosecutions (per 100 000 population)",
              x = "Year",
              color = "Country") +
@@ -509,7 +509,7 @@ server <- function(input, output) {
         facet_grid(Crime ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Violence, theft, and drug offenses. Females, by place of birth (15-75 years; age-standardized)",
+        labs(title = "Violence, theft, and drug offenses. Females, by place of birth (age-standardized; 15-75 years)",
              y = "Prosecutions (per 100 000 population)",
              x = "Year",
              color = "Country") +
@@ -528,7 +528,7 @@ server <- function(input, output) {
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "All crimes. 15-24-year-old males and females, by socio-economic background (15-75 years)",
+        labs(title = "All crimes. 15-24-year-old males and females, by socio-economic background",
              y = "Prosecutions (per 100 000 population)",
              x = "Year",
              color = "Parents income") +
@@ -547,7 +547,7 @@ server <- function(input, output) {
         facet_grid(Sex ~ Crime, scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Violence, theft, and drug offenses. 15-24-year-old males and females, by socio-economic background (15-75 years)",
+        labs(title = "Violence, theft, and drug offenses. 15-24-year-old males and females, by socio-economic background",
              y = "Prosecutions (per 100 000 population)",
              x = "Year",
              color = "Parents income") +
@@ -821,7 +821,6 @@ server <- function(input, output) {
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
     }
-    
   })
   
   # Create data for datatable ----
