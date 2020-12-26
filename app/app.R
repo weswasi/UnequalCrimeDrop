@@ -32,11 +32,11 @@ ui <- fluidPage(
       selectInput("var", 
                   label = strong("Choose data to display"),
                   choices = list(
-                    "The general development of crime and prosecutions:" = c(
+                    "General development of crime and prosecutions:" = c(
                       "Reported crimes",
                       "Number of prosecutions",
                       "Prosecutions and prosecuted crimes"),
-                    "Prosecutions:" = c(
+                    "Prosecutions by type of crime, sex, place of birth or socio-economic background:" = c(
                       "Violence, theft, and drug offenses",
                       "All crimes, by sex",
                       "Violence, theft, and drug offenses, by sex",
@@ -49,7 +49,7 @@ ui <- fluidPage(
                       "Violence, theft, and drug offenses. Females, by place of birth",
                       "All crimes. 15-24-year-old males and females, by socio-economic background",
                       "Violence, theft, and drug offenses. 15-24-year-old males and females, by socio-economic background"),
-                    "The risk (%) of being prosecuted:" = c(
+                    "Risk (%) of being prosecuted:" = c(
                       "All crimes with increasing age among birth cohorts, by sex",
                       "Violent crime with increasing age among birth cohorts, by sex",
                       "Thefts with increasing age among birth cohorts, by sex",
