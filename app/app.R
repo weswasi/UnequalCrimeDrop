@@ -32,11 +32,11 @@ ui <- fluidPage(
       selectInput("var", 
                   label = strong("Choose data to display"),
                   choices = list(
-                    "General development of crime and prosecutions:" = c(
+                    "General development of crime and convictions:" = c(
                       "Reported crimes",
-                      "Number of prosecutions",
-                      "Prosecutions and prosecuted crimes"),
-                    "Prosecutions by type of crime, sex, place of birth or socio-economic background:" = c(
+                      "Number of convictions",
+                      "Convictions and convicted crimes"),
+                    "Convictions by type of crime, sex, place of birth or socio-economic background:" = c(
                       "Violence, theft, and drug offenses",
                       "All crimes, by sex",
                       "Violence, theft, and drug offenses, by sex",
@@ -49,21 +49,21 @@ ui <- fluidPage(
                       "Violence, theft, and drug offenses. Females, by place of birth",
                       "All crimes. 15-24-year-old males and females, by socio-economic background",
                       "Violence, theft, and drug offenses. 15-24-year-old males and females, by socio-economic background"),
-                    "Risk (%) of being prosecuted:" = c(
+                    "Risk (%) of being convicted:" = c(
                       "All crimes with increasing age among birth cohorts, by sex",
                       "Violent crime with increasing age among birth cohorts, by sex",
                       "Thefts with increasing age among birth cohorts, by sex",
                       "Drug offenses with increasing age among birth cohorts, by sex",
                       "Crime participation and crime rate among cohorts, by sex",
-                      "The disproportion of prosecuted crime among birth cohorts, by sex"),
+                      "The disproportion of convicted among birth cohorts, by sex"),
                     "Share (%) of:" = c(
-                      "Prosecuted males and females at the age of 24, by place of birth",
+                      "Convicted males and females at the age of 24, by place of birth",
                       "Highly active males and females at the age of 24, by place of birth",
-                      "Prosecuted males and females at the age of 24, by socio-economic background",
-                      "Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background",
+                      "Convicted males and females at the age of 24, by socio-economic background",
+                      "Highly active males (≥ 4 convictions) and females (≥ 2 convictions) at the age of 24, by socio-economic background",
                       "24-year-olds from the low- and high-income category, by place of birth",
-                      "24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth",
-                      "24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth")),
+                      "24-year-old males from low-income families with ≥ 1 conviction and ≥ 4 convictions, by place of birth",
+                      "24-year-old females from low-income families with ≥ 1 conviction and ≥ 2 convictions, by place of birth")),
                   selected = "Violence, theft, and drug offenses. 15-24-year-old males and females, by socio-economic background",
                   selectize = FALSE),
       
@@ -71,21 +71,21 @@ ui <- fluidPage(
       conditionalPanel(
         condition = 
           "input.var != 'Reported crimes' &
-          input.var != 'Number of prosecutions' &
+          input.var != 'Number of convictions' &
           input.var != 'All crimes with increasing age among birth cohorts, by sex' &
           input.var != 'Violent crime with increasing age among birth cohorts, by sex' &
           input.var != 'Thefts with increasing age among birth cohorts, by sex' &
           input.var != 'Drug offenses with increasing age among birth cohorts, by sex' &
           input.var != 'Crime participation and crime rate among cohorts, by sex' &
-          input.var != 'The disproportion of prosecuted crime among birth cohorts, by sex' &
+          input.var != 'The disproportion of convicted among birth cohorts, by sex' &
           input.var != 'All crimes. 15-24-year-old males and females, by socio-economic background' &
-          input.var != 'Prosecuted males and females at the age of 24, by place of birth' &
+          input.var != 'Convicted males and females at the age of 24, by place of birth' &
           input.var != 'Highly active males and females at the age of 24, by place of birth' &
-          input.var != 'Prosecuted males and females at the age of 24, by socio-economic background' &
-          input.var != 'Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background' &
+          input.var != 'Convicted males and females at the age of 24, by socio-economic background' &
+          input.var != 'Highly active males (≥ 4 convictions) and females (≥ 2 convictions) at the age of 24, by socio-economic background' &
           input.var != '24-year-olds from the low- and high-income category, by place of birth' &
-          input.var != '24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth' &
-          input.var != '24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth' &
+          input.var != '24-year-old males from low-income families with ≥ 1 conviction and ≥ 4 convictions, by place of birth' &
+          input.var != '24-year-old females from low-income families with ≥ 1 conviction and ≥ 2 convictions, by place of birth' &
           input.var != 'Violence, theft, and drug offenses. 15-24-year-old males and females, by socio-economic background'",
         sliderInput("yearrange1", strong("Year"), 
                     1973, 2017, c(1973,2017), sep= "", step = 1)),
@@ -94,7 +94,7 @@ ui <- fluidPage(
       conditionalPanel(
         condition = 
           "input.var == 'Reported crimes' |
-        input.var == 'Number of prosecutions'",
+        input.var == 'Number of convictions'",
         sliderInput("yearrange2", strong("Year"), 
                     1975, 2017, c(1975,2017), sep= "", step = 1)),
       
@@ -102,13 +102,13 @@ ui <- fluidPage(
       conditionalPanel(
         condition = 
           "input.var == 'All crimes. 15-24-year-old males and females, by socio-economic background' |
-          input.var == 'Prosecuted males and females at the age of 24, by place of birth' |
+          input.var == 'Convicted males and females at the age of 24, by place of birth' |
           input.var == 'Highly active males and females at the age of 24, by place of birth' |
-          input.var == 'Prosecuted males and females at the age of 24, by socio-economic background' |
-          input.var == 'Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background' |
+          input.var == 'Convicted males and females at the age of 24, by socio-economic background' |
+          input.var == 'Highly active males (≥ 4 convictions) and females (≥ 2 convictions) at the age of 24, by socio-economic background' |
           input.var == '24-year-olds from the low- and high-income category, by place of birth' |
-          input.var == '24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth' |
-          input.var == '24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth' |
+          input.var == '24-year-old males from low-income families with ≥ 1 conviction and ≥ 4 convictions, by place of birth' |
+          input.var == '24-year-old females from low-income families with ≥ 1 conviction and ≥ 2 convictions, by place of birth' |
           input.var == 'Violence, theft, and drug offenses. 15-24-year-old males and females, by socio-economic background'",
         sliderInput("yearrange3", strong("Year"), 
                     1990, 2017, c(1975,2017), sep= "", step = 1)),
@@ -179,11 +179,11 @@ ui <- fluidPage(
       # Checkbox country (3 levels) ----
       conditionalPanel(
         condition = 
-          "input.var == 'Prosecuted males and females at the age of 24, by place of birth' | 
+          "input.var == 'Convicted males and females at the age of 24, by place of birth' | 
           input.var == 'Highly active males and females at the age of 24, by place of birth' | 
           input.var == '24-year-olds from the low- and high-income category, by place of birth' |
-          input.var == '24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth' |
-          input.var == '24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth'",
+          input.var == '24-year-old males from low-income families with ≥ 1 conviction and ≥ 4 convictions, by place of birth' |
+          input.var == '24-year-old females from low-income families with ≥ 1 conviction and ≥ 2 convictions, by place of birth'",
         checkboxGroupInput("checkcountry2", strong("Place of birth"), 
                            choices = unique(seven_one_ab_l$Country),
                            selected = seven_one_ab_l$Country[1:10])),
@@ -193,8 +193,8 @@ ui <- fluidPage(
         condition = 
           "input.var == 'All crimes. 15-24-year-old males and females, by socio-economic background' |
           input.var == 'Violence, theft, and drug offenses. 15-24-year-old males and females, by socio-economic background' |
-          input.var == 'Prosecuted males and females at the age of 24, by socio-economic background' |
-          input.var == 'Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background'",
+          input.var == 'Convicted males and females at the age of 24, by socio-economic background' |
+          input.var == 'Highly active males (≥ 4 convictions) and females (≥ 2 convictions) at the age of 24, by socio-economic background'",
         checkboxGroupInput("checkincome", strong("Parents income group"),
                            choices = unique(five_one_ab_l$Income),
                            selected = five_one_ab_l$Income[1:5])),
@@ -202,7 +202,7 @@ ui <- fluidPage(
       # Checkbox birth year ----
       conditionalPanel(
         condition = 
-          "input.var == 'The disproportion of prosecuted crime among birth cohorts, by sex'",
+          "input.var == 'The disproportion of convicted among birth cohorts, by sex'",
         checkboxGroupInput("checkbirthyear", strong("Birth year"),
                            choices = unique(six_four_ab_l$Birthyear),
                            selected = six_four_ab_l$Birthyear[1:40])),
@@ -292,42 +292,51 @@ server <- function(input, output) {
              color = "Crime") +
         scale_x_continuous(breaks = seq(1975, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
-        theme(plot.title = element_text(color="gray50"),
-              text = element_text(size=15)) +
-        scale_colour_brewer(palette = "Paired")
-    }
-    
-    else if (input$var == "Number of prosecutions") {
-      one_two_l %>% 
-        subset(Year >= input$yearrange2[1] & Year <= input$yearrange2[2]) %>% 
-        ggplot(aes(Year, Value, color = Source)) +
-        geom_line(size = 1.2) +
-        geom_point(size = 2) +
-        labs(title = "Number of prosecutions (all crimes) depending on data source",
-             y = "Prosecutions",
-             x = "Year",
-             color = "Data source") +
-        scale_x_continuous(breaks = seq(1975, 2017, by = 4)) +
-        scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
     }
     
-    else if (input$var == "Prosecutions and prosecuted crimes"){
-      one_three_l %>%
-        subset(Year >= input$yearrange1[1] & Year <= input$yearrange1[2]) %>% 
-        ggplot(aes(Year, Value, color = Prosecutions)) +
+    else if (input$var == "Number of convictions") {
+      one_two_l %>% 
+        subset(Year >= input$yearrange2[1] & Year <= input$yearrange2[2]) %>% 
+        ggplot(aes(Year, Value, color = Source)) +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Prosecutions and prosecuted crimes (15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+        labs(title = "Number of convictions (all crimes) depending on data source",
+             y = "Convictions",
              x = "Year",
-             color = "Prosecutions") +
+             color = "Data source") +
+        scale_x_continuous(breaks = seq(1975, 2017, by = 4)) +
+        scale_y_continuous(limits = c(0, NA)) +
+        guides(color = guide_legend(nrow = 3)) +
+        theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
+          plot.title = element_text(color="gray50"),
+          text = element_text(size=15)) +
+        guides(color = guide_legend(nrow = 3)) +
+        scale_colour_brewer(palette = "Paired")
+    }
+    
+    else if (input$var == "Convictions and convicted crimes"){
+      one_three_l %>%
+        subset(Year >= input$yearrange1[1] & Year <= input$yearrange1[2]) %>% 
+        ggplot(aes(Year, Value, color = Convictions)) +
+        geom_line(size = 1.2) +
+        geom_point(size = 2) +
+        labs(title = "Convictions and convicted crimes (15-75 years)",
+             y = "Convictions (per 100 000 population)",
+             x = "Year",
+             color = "Conviction") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -340,12 +349,14 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Violence, theft, and drug offenses (15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Crime") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -358,12 +369,14 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "All crimes, by sex (15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Sex") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -377,12 +390,14 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Violence, theft, and drug offenses, by sex (15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Crime") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -396,14 +411,17 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "All crimes, by age and sex (15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Age") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
+        guides(color = guide_legend(nrow = 1)) +
         scale_colour_brewer(palette = "Paired")
     }
     
@@ -415,14 +433,17 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Theft, by age and sex (15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Age") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
+        guides(color = guide_legend(nrow = 1)) +
         scale_colour_brewer(palette = "Paired")
     }
     
@@ -434,14 +455,17 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Violence, by age and sex (15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Age") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
+        guides(color = guide_legend(nrow = 1)) +
         scale_colour_brewer(palette = "Paired")
     }
     
@@ -453,14 +477,17 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Drug offenses, by age and sex (15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Age") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
+        guides(color = guide_legend(nrow = 1)) +
         scale_colour_brewer(palette = "Paired")
     }
     
@@ -472,12 +499,14 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "All crimes, by place of birth and sex (age-standardized; 15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Country") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -491,12 +520,14 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Violence, theft, and drug offenses. Males, by place of birth (age-standardized; 15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Country") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -510,12 +541,14 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Violence, theft, and drug offenses. Females, by place of birth (age-standardized; 15-75 years)",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Country") +
         scale_x_continuous(breaks = seq(1973, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -529,12 +562,14 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "All crimes. 15-24-year-old males and females, by socio-economic background",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Parents income") +
         scale_x_continuous(breaks = seq(1990, 2017, by = 2)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -548,12 +583,14 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Violence, theft, and drug offenses. 15-24-year-old males and females, by socio-economic background",
-             y = "Prosecutions (per 100 000 population)",
+             y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Parents income") +
         scale_x_continuous(breaks = seq(1990, 2017, by = 4)) +
         scale_y_continuous(limits = c(0, NA)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15),
           axis.text.x = element_text(angle = -45)) +
@@ -568,15 +605,18 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "All crimes with increasing age among birth cohorts, by sex",
-             y = "Proportion of prosecuted (%)",
+             y = "Proportion of convicted (%)",
              x = "Age",
              color = "Birth year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
+        guides(color = guide_legend(nrow = 1)) +
         scale_colour_brewer(palette = "Paired")
     }
     
@@ -588,15 +628,18 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Violent crime with increasing age among birth cohorts, by sex",
-             y = "Proportion of prosecuted (%)",
+             y = "Proportion of convicted (%)",
              x = "Age",
              color = "Birth year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
+        guides(color = guide_legend(nrow = 1)) +
         scale_colour_brewer(palette = "Paired")
     }
     
@@ -608,15 +651,18 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Thefts with increasing age among birth cohorts, by sex",
-             y = "Proportion of prosecuted (%)",
+             y = "Proportion of convicted (%)",
              x = "Age",
              color = "Birth year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
+        guides(color = guide_legend(nrow = 1)) +
         scale_colour_brewer(palette = "Paired")
     }
     
@@ -628,15 +674,18 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Drug offenses with increasing age among birth cohorts, by sex",
-             y = "Proportion of prosecuted (%)",
+             y = "Proportion of convicted (%)",
              x = "Age",
              color = "Birth year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
+        guides(color = guide_legend(nrow = 1)) +
         scale_colour_brewer(palette = "Paired")
     }
     
@@ -645,36 +694,40 @@ server <- function(input, output) {
         subset(Birthyear >= input$birthyear[1] & Birthyear <= input$birthyear[2]) %>% 
         ggplot(aes(x = Birthyear)) +
         facet_grid(Sex ~., scales="free") +
-        geom_line(aes(y = `Proportion of prosecuted individuals`), size = 1.2, color = "#33A02C") +
-        geom_point(aes(y = `Proportion of prosecuted individuals`), color = "#33A02C") +
+        geom_line(aes(y = `Proportion of convicted individuals`), size = 1.2, color = "#33A02C") +
+        geom_point(aes(y = `Proportion of convicted individuals`), color = "#33A02C") +
         geom_line(aes(y = `Average number of criminal offenses` * 3.5), size = 1.2, color = "#1F78B4") +
         geom_point(aes(y = `Average number of criminal offenses` * 3.5), color = "#1F78B4") +
         labs(title = "Crime participation and crime rate among cohorts, by sex",
-             y = "Proportion of prosecuted (%)",
+             y = "Proportion of convicted (%)",
              x = "Birth year") +
-        scale_y_continuous("Proportion of prosecuted individuals (%) in population", 
+        scale_y_continuous("Proportion of convicted individuals (%) in population", 
                            labels = percent_format(scale = 1, accuracy = 1),
                            sec.axis = sec_axis(~ . / 3.5, name = "Average number of criminal offenses")) +
         scale_x_continuous(breaks = seq(1958, 1992, by = 2)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15),
           axis.title.y = element_text(color = "#33A02C"),
           axis.title.y.right = element_text(color = "#1F78B4"))
     }
     
-    else if (input$var == "The disproportion of prosecuted crime among birth cohorts, by sex") {
+    else if (input$var == "The disproportion of convicted among birth cohorts, by sex") {
       six_four_ab_l %>%
         subset(Birthyear %in% input$checkbirthyear) %>% 
         ggplot(aes(Birthyear, Value, fill = Percentile)) +
         facet_grid(Sex ~ ., scales="free") +
         geom_bar(position="fill", stat="identity") +
-        labs(title = "The disproportion of prosecuted crime among birth cohorts, by sex",
-             y = "Proportions (%) of all prosecuted crimes",
+        labs(title = "The disproportion of convicted among birth cohorts, by sex",
+             y = "Proportions (%) of all convicted",
              x = "Birth year") +
         geom_text(aes(label = Value),
                   position="fill", vjust=+2.1, size=3, color="white") +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_fill_grey() +
@@ -682,14 +735,14 @@ server <- function(input, output) {
         scale_x_continuous(breaks = seq(1960, 1990, by = 5))
     }
     
-    else if (input$var == "Prosecuted males and females at the age of 24, by place of birth") {
+    else if (input$var == "Convicted males and females at the age of 24, by place of birth") {
       seven_one_ab_l %>%
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2] & Country %in% input$checkcountry2) %>% 
         ggplot(aes(Year, Value, color = Country)) +
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Prosecuted males and females at the age of 24, by place of birth",
+        labs(title = "Convicted males and females at the age of 24, by place of birth",
              x = "Year",
              y = "",
              color = "Country") +
@@ -697,6 +750,8 @@ server <- function(input, output) {
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -717,19 +772,21 @@ server <- function(input, output) {
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
     }
     
-    else if (input$var == "Prosecuted males and females at the age of 24, by socio-economic background") {
+    else if (input$var == "Convicted males and females at the age of 24, by socio-economic background") {
       seven_two_ab_l %>%
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2] & Income %in% input$checkincome) %>% 
         ggplot(aes(Year, Value, color = Income)) +
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Prosecuted males and females at the age of 24, by socio-economic background",
+        labs(title = "Convicted males and females at the age of 24, by socio-economic background",
              x = "Year",
              y = "",
              color = "Parents income") +
@@ -737,19 +794,21 @@ server <- function(input, output) {
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
     }
     
-    else if (input$var == "Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background") {
+    else if (input$var == "Highly active males (≥ 4 convictions) and females (≥ 2 convictions) at the age of 24, by socio-economic background") {
       seven_two_cd_l %>%
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2] & Income %in% input$checkincome) %>% 
         ggplot(aes(Year, Value, color = Income)) +
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background",
+        labs(title = "Highly active males (≥ 4 convictions) and females (≥ 2 convictions) at the age of 24, by socio-economic background",
              y = "",
              x = "Year",
              color = "Parents income") +
@@ -757,6 +816,8 @@ server <- function(input, output) {
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -777,19 +838,21 @@ server <- function(input, output) {
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
     }
     
-    else if (input$var == "24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth") {
+    else if (input$var == "24-year-old males from low-income families with ≥ 1 conviction and ≥ 4 convictions, by place of birth") {
       seven_four_ab_l %>%
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2] & Country %in% input$checkcountry2) %>% 
         ggplot(aes(Year, Value, color = Country)) +
-        facet_grid(Prosecution ~ ., scales="free") +
+        facet_grid(Conviction ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth",
+        labs(title = "24-year-old males from low-income families with ≥ 1 conviction and ≥ 4 convictions, by place of birth",
              y = "",
              x = "Year",
              color = "Country") +
@@ -797,19 +860,21 @@ server <- function(input, output) {
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
     }
     
-    else if (input$var == "24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth") {
+    else if (input$var == "24-year-old females from low-income families with ≥ 1 conviction and ≥ 2 convictions, by place of birth") {
       seven_five_ab_l %>%
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2] & Country %in% input$checkcountry2) %>% 
         ggplot(aes(Year, Value, color = Country)) +
-        facet_grid(Prosecution ~ ., scales="free") +
+        facet_grid(Conviction ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth",
+        labs(title = "24-year-old females from low-income families with ≥ 1 conviction and ≥ 2 convictions, by place of birth",
              y = "",
              x = "Year",
              color = "Country") +
@@ -817,6 +882,8 @@ server <- function(input, output) {
         scale_y_continuous(limits = c(0, NA),
                            labels = percent_format(scale = 1, accuracy = 1)) +
         theme(
+          legend.position = "bottom",
+          legend.justification = c(0,1),
           plot.title = element_text(color="gray50"),
           text = element_text(size=15)) +
         scale_colour_brewer(palette = "Paired")
@@ -831,11 +898,11 @@ server <- function(input, output) {
         select(Year, input$checkcrime1) %>% 
         subset(Year >= input$yearrange2[1] & Year <= input$yearrange2[2])}
     
-    else if (input$var == "Number of prosecutions") {
+    else if (input$var == "Number of convictions") {
       one_two_w %>% 
         subset(Year >= input$yearrange2[1] & Year <= input$yearrange2[2])}
     
-    else if (input$var == "Prosecutions and prosecuted crimes") {
+    else if (input$var == "Convictions and convicted crimes") {
       one_three_w %>% 
         subset(Year >= input$yearrange1[1] & Year <= input$yearrange1[2])}
     
@@ -921,11 +988,11 @@ server <- function(input, output) {
       six_three_ab_w %>% 
         subset(Birthyear >= input$birthyear[1] & Birthyear <= input$birthyear[2])}
     
-    else if (input$var == "The disproportion of prosecuted crime among birth cohorts, by sex") {
+    else if (input$var == "The disproportion of convicted among birth cohorts, by sex") {
       six_four_ab_w %>% 
         subset(Birthyear %in% input$checkbirthyear)}
     
-    else if (input$var == "Prosecuted males and females at the age of 24, by place of birth") {
+    else if (input$var == "Convicted males and females at the age of 24, by place of birth") {
       seven_one_ab_w %>% 
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2])  %>% 
         select(Year, ends_with(input$checkcountry2))}
@@ -935,12 +1002,12 @@ server <- function(input, output) {
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2]) %>% 
         select(Year, ends_with(input$checkcountry2))}
     
-    else if (input$var == "Prosecuted males and females at the age of 24, by socio-economic background") {
+    else if (input$var == "Convicted males and females at the age of 24, by socio-economic background") {
       seven_two_ab_w %>% 
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2]) %>% 
         select(Year, ends_with(input$checkincome))}
     
-    else if (input$var == "Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background") {
+    else if (input$var == "Highly active males (≥ 4 convictions) and females (≥ 2 convictions) at the age of 24, by socio-economic background") {
       seven_two_cd_w %>% 
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2]) %>% 
         select(Year, ends_with(input$checkincome))}
@@ -950,12 +1017,12 @@ server <- function(input, output) {
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2]) %>% 
         select(Year, starts_with(input$checkcountry2))}
     
-    else if (input$var == "24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth") {
+    else if (input$var == "24-year-old males from low-income families with ≥ 1 conviction and ≥ 4 convictions, by place of birth") {
       seven_four_ab_w %>% 
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2]) %>% 
         select(Year, starts_with(input$checkcountry2))}
     
-    else if (input$var == "24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth") {
+    else if (input$var == "24-year-old females from low-income families with ≥ 1 conviction and ≥ 2 convictions, by place of birth") {
       seven_five_ab_w %>% 
         subset(Year >= input$yearrange3[1] & Year <= input$yearrange3[2]) %>% 
         select(Year, starts_with(input$checkcountry2))}
@@ -968,10 +1035,10 @@ server <- function(input, output) {
     if (input$var == "Reported crimes") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=16")}
     
-    else if (input$var == "Number of prosecutions") {
+    else if (input$var == "Number of convictions") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=20")}
     
-    else if (input$var == "Prosecutions and prosecuted crimes") {
+    else if (input$var == "Convictions and convicted crimes") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=22")}
     
     else if (input$var == "Violence, theft, and drug offenses") {
@@ -1025,28 +1092,28 @@ server <- function(input, output) {
     else if (input$var == "Crime participation and crime rate among cohorts, by sex") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=80")}
     
-    else if (input$var == "The disproportion of prosecuted crime among birth cohorts, by sex") {
+    else if (input$var == "The disproportion of convicted among birth cohorts, by sex") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=82")}
     
-    else if (input$var == "Prosecuted males and females at the age of 24, by place of birth") {
+    else if (input$var == "Convicted males and females at the age of 24, by place of birth") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=86")}
     
     else if (input$var == "Highly active males and females at the age of 24, by place of birth") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=86")}
     
-    else if (input$var == "Prosecuted males and females at the age of 24, by socio-economic background") {
+    else if (input$var == "Convicted males and females at the age of 24, by socio-economic background") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=89")}
     
-    else if (input$var == "Highly active males (≥ 4 prosecutions) and females (≥ 2 prosecutions) at the age of 24, by socio-economic background") {
+    else if (input$var == "Highly active males (≥ 4 convictions) and females (≥ 2 convictions) at the age of 24, by socio-economic background") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=89")}
     
     else if (input$var == "24-year-olds from the low- and high-income category, by place of birth") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=91")}
     
-    else if (input$var == "24-year-old males from low-income families with ≥ 1 prosecution and ≥ 4 prosecutions, by place of birth") {
+    else if (input$var == "24-year-old males from low-income families with ≥ 1 conviction and ≥ 4 convictions, by place of birth") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=91")}
     
-    else if (input$var == "24-year-old females from low-income families with ≥ 1 prosecution and ≥ 2 prosecutions, by place of birth") {
+    else if (input$var == "24-year-old females from low-income families with ≥ 1 conviction and ≥ 2 convictions, by place of birth") {
       tags$iframe(style="height:980px; width:780px", src="rapport.pdf#page=91")}
     
   })

@@ -24,7 +24,7 @@ one_three_w <- read_xlsx("./datasets/one_three.xlsx")
 
 # Long
 one_three_l <- one_three_w %>% 
-  pivot_longer(!Year, names_to = "Prosecutions", values_to = "Value")
+  pivot_longer(!Year, names_to = "Convictions", values_to = "Value")
 
 # 1_4 ----
 # Wide
@@ -326,12 +326,12 @@ seven_four_ab_w <- read_xlsx("./datasets/seven_four_ab.xlsx")
 
 # Long
 seven_four_ab_l <- seven_four_ab_w %>% 
-  pivot_longer(!Year, names_to = "Prosecution", values_to = "Value") %>% 
-  mutate(Country = Prosecution) %>% 
-  select(Year, Prosecution, Country, Value)
+  pivot_longer(!Year, names_to = "Conviction", values_to = "Value") %>% 
+  mutate(Country = Conviction) %>% 
+  select(Year, Conviction, Country, Value)
 
 seven_four_ab_l$Country <- gsub("-.*", "", seven_four_ab_l$Country)
-seven_four_ab_l$Prosecution <- gsub(".*-", "", seven_four_ab_l$Prosecution)
+seven_four_ab_l$Conviction <- gsub(".*-", "", seven_four_ab_l$Conviction)
 
 # 7_5_ab ----
 # Wide
@@ -339,12 +339,12 @@ seven_five_ab_w <- read_xlsx("./datasets/seven_five_ab.xlsx")
 
 # Long
 seven_five_ab_l <- seven_five_ab_w %>% 
-  pivot_longer(!Year, names_to = "Prosecution", values_to = "Value") %>% 
-  mutate(Country = Prosecution) %>% 
-  select(Year, Prosecution, Country, Value)
+  pivot_longer(!Year, names_to = "Conviction", values_to = "Value") %>% 
+  mutate(Country = Conviction) %>% 
+  select(Year, Conviction, Country, Value)
 
 seven_five_ab_l$Country <- gsub("-.*", "", seven_five_ab_l$Country)
-seven_five_ab_l$Prosecution <- gsub(".*-", "", seven_five_ab_l$Prosecution)
+seven_five_ab_l$Conviction <- gsub(".*-", "", seven_five_ab_l$Conviction)
 
 # Save ----
 save(one_one_w, 
