@@ -328,7 +328,7 @@ server <- function(input, output) {
         ggplot(aes(Year, Value, color = Convictions)) +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Convictions and convicted crimes (15-75 years)",
+        labs(title = "Convictions and convicted crimes",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Conviction") +
@@ -348,7 +348,7 @@ server <- function(input, output) {
         ggplot(aes(Year, Value, color = Crime)) +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Violence, theft, and drug offenses (15-75 years)",
+        labs(title = "Violence, theft, and drug offenses",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Crime") +
@@ -368,7 +368,7 @@ server <- function(input, output) {
         ggplot(aes(Year, Value, color = Sex)) +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "All crimes, by sex (15-75 years)",
+        labs(title = "All crimes, by sex",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Sex") +
@@ -389,7 +389,7 @@ server <- function(input, output) {
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Violence, theft, and drug offenses, by sex (15-75 years)",
+        labs(title = "Violence, theft, and drug offenses, by sex",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Crime") +
@@ -410,7 +410,7 @@ server <- function(input, output) {
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "All crimes, by age and sex (15-75 years)",
+        labs(title = "All crimes, by age and sex",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Age") +
@@ -432,7 +432,7 @@ server <- function(input, output) {
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Theft, by age and sex (15-75 years)",
+        labs(title = "Theft, by age and sex",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Age") +
@@ -454,7 +454,7 @@ server <- function(input, output) {
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Violence, by age and sex (15-75 years)",
+        labs(title = "Violence, by age and sex",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Age") +
@@ -476,7 +476,7 @@ server <- function(input, output) {
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Drug offenses, by age and sex (15-75 years)",
+        labs(title = "Drug offenses, by age and sex",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Age") +
@@ -498,7 +498,7 @@ server <- function(input, output) {
         facet_grid(Sex ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "All crimes, by place of birth and sex (age-standardized; 15-75 years)",
+        labs(title = "All crimes, by place of birth and sex (age-standardized)",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Country") +
@@ -519,7 +519,7 @@ server <- function(input, output) {
         facet_grid(Crime ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Violence, theft, and drug offenses. Males, by place of birth (age-standardized; 15-75 years)",
+        labs(title = "Violence, theft, and drug offenses. Males, by place of birth (age-standardized)",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Country") +
@@ -540,7 +540,7 @@ server <- function(input, output) {
         facet_grid(Crime ~ ., scales="free") +
         geom_line(size = 1.2) +
         geom_point(size = 2) +
-        labs(title = "Violence, theft, and drug offenses. Females, by place of birth (age-standardized; 15-75 years)",
+        labs(title = "Violence, theft, and drug offenses. Females, by place of birth (age-standardized)",
              y = "Convictions (per 100 000 population)",
              x = "Year",
              color = "Country") +
