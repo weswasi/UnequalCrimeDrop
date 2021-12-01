@@ -605,7 +605,7 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "All crimes with increasing age among birth cohorts, by sex",
-             y = "Proportion of convicted (%)",
+             y = "Percentage (%) convicted",
              x = "Age",
              color = "Birth year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
@@ -628,7 +628,7 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Violent crime with increasing age among birth cohorts, by sex",
-             y = "Proportion of convicted (%)",
+             y = "Percentage (%) convicted",
              x = "Age",
              color = "Birth year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
@@ -651,7 +651,7 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Thefts with increasing age among birth cohorts, by sex",
-             y = "Proportion of convicted (%)",
+             y = "Percentage (%) convicted",
              x = "Age",
              color = "Birth year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
@@ -674,7 +674,7 @@ server <- function(input, output) {
         geom_line(size = 1.2) +
         geom_point(size = 2) +
         labs(title = "Drug offenses with increasing age among birth cohorts, by sex",
-             y = "Proportion of convicted (%)",
+             y = "Percentage (%) convicted",
              x = "Age",
              color = "Birth year") +
         scale_x_continuous(breaks = seq(15, 58, by = 2)) +
@@ -699,7 +699,7 @@ server <- function(input, output) {
         geom_line(aes(y = `Average number of criminal offenses` * 3.5), size = 1.2, color = "#1F78B4") +
         geom_point(aes(y = `Average number of criminal offenses` * 3.5), color = "#1F78B4") +
         labs(title = "Crime participation and crime rate among cohorts, by sex",
-             y = "Proportion of convicted (%)",
+             y = "Percentage (%) convicted",
              x = "Birth year") +
         scale_y_continuous("Proportion of convicted individuals (%) in population", 
                            labels = percent_format(scale = 1, accuracy = 1),
